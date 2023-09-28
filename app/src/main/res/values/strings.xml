@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">YouTube</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="playlist">playlist</string>
+    <string name="playlist_name">Playlist name</string>
+    <string name="emotional_well_being_healing_practices_for_children"><![CDATA[Emotional Well-being & Healing Practices for Children]]></string>
+    <string name="_32_video_series">32 video series</string>
+</resources>
