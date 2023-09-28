@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.example.youtube.core.network.RetrofitClient
+import com.example.youtube.domain.repository.Repository
+import com.example.youtube.presentation.playlists.PlaylistsViewModel
 
-abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
+abstract class BaseFragment<VB : ViewBinding/*, VM : ViewModel*/> : Fragment() {
 
     private var _binding: VB? = null
-    protected abstract val viewModel: VM
+    //protected abstract val viewModel:VM
     protected val binding get() = _binding!!
     protected abstract fun inflateViewBinding(): VB
 

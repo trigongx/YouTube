@@ -14,7 +14,7 @@ class PlaylistsAdapter:RecyclerView.Adapter<PlaylistsAdapter.PlaylistsViewHolder
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addData(playlistModelItem:List<PlaylistsModel.Item>){
+    fun addData(playlistModelItem:List<PlaylistsModel.Item>?){
         list = playlistModelItem as MutableList<PlaylistsModel.Item>
         notifyDataSetChanged()
     }

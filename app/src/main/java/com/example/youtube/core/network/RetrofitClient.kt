@@ -12,21 +12,22 @@ class RetrofitClient {
     fun createApiService(): ApiService {
 
         val interceptor = HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
+                .setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .build()
+                .addInterceptor(interceptor)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .build()
 
         val retrofitClient = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build()
 
         return retrofitClient.create(ApiService::class.java)
-    }
+        }
+
 }
