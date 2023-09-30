@@ -1,28 +1,22 @@
 package com.example.youtube.domain.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.youtube.BuildConfig.API_KEY
-import com.example.youtube.core.network.ApiService
-import com.example.youtube.core.network.RetrofitClient
+import androidx.lifecycle.liveData
+import com.example.youtube.core.network.RemoteDataSource
 import com.example.youtube.core.utils.Resource
 import com.example.youtube.data.model.PlaylistsModel
-import com.example.youtube.utils.Constants.CHANNEL_ID
-import com.example.youtube.utils.Constants.PART
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
-class Repository(private val apiService: ApiService) {
-
+class Repository(private val remoteDataSource: RemoteDataSource) {
 	fun getPlaylists(): LiveData<Resource<PlaylistsModel>> {
-		val resourceData = MutableLiveData<Resource<PlaylistsModel>>()
+			return liveData {
+				emit(Resource.loading())
+				emit(remoteDataSource.getPlaylists())
+			}
+		/*val resourceData = MutableLiveData<Resource<PlaylistsModel>>()
 		apiService.getPlaylists(
 			part = PART,
 			channelId = CHANNEL_ID,
 			apiKey = API_KEY,
-			maxResults = 11,
+			maxResults = 20,
 		).enqueue(
 			object : Callback<PlaylistsModel> {
 				override fun onResponse(
@@ -50,6 +44,6 @@ class Repository(private val apiService: ApiService) {
 				}
 			}
 		)
-		return resourceData
+		return resourceData*/
 	}
 }

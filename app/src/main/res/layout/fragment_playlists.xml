@@ -13,4 +13,13 @@
        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
        tools:listitem="@layout/item_playlist"/>
 
+   <ProgressBar
+      android:id="@+id/pb_loading"
+       android:layout_width="@dimen/progress_bar_parameters"
+       android:layout_height="@dimen/progress_bar_parameters"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
