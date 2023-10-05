@@ -9,11 +9,11 @@
         android:id="@+id/container_img_video"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="120dp"
+        android:layout_width="@dimen/card_video_width"
         app:cardCornerRadius="@dimen/_4dp"
-        android:layout_marginStart="@dimen/_16dp"
-        android:layout_marginTop="@dimen/_16dp"
-        android:layout_height="80dp">
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_height="@dimen/card_video_height">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,6 +27,7 @@
                 android:id="@+id/img_video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:src="@color/grey"
                 android:importantForAccessibility="no" />
 
@@ -37,7 +38,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:src="@color/black_transparent"
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
+                android:layout_height="@dimen/_24dp"
                 android:importantForAccessibility="no" />
 
             <TextView
@@ -48,7 +49,7 @@
                 android:layout_marginStart="@dimen/_52dp"
                 android:textColor="@color/white"
                 android:text="@string/playlist"
-                android:textSize="12sp"
+                android:textSize="@dimen/_12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -62,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/container_img_video"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/_25dp"
         android:textColor="@color/black"
         android:textSize="@dimen/_16sp"
         android:textStyle="bold"
@@ -71,7 +72,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/emotional_well_being_healing_practices_for_children"
-        android:layout_marginEnd="@dimen/_16dp"/>
+        android:layout_marginEnd="@dimen/default_margin"/>
     
     <TextView
         android:id="@+id/tv_playlist_video_count"
@@ -82,6 +83,6 @@
         android:text="@string/_32_video_series"
         app:layout_constraintTop_toBottomOf="@id/tv_playlist_name"
         android:textSize="@dimen/_12sp"
-        android:layout_marginEnd="@dimen/_16dp"/>
+        android:layout_marginEnd="@dimen/default_margin"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

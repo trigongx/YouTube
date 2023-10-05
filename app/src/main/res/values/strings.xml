@@ -6,4 +6,7 @@
     <string name="playlist_name">Playlist name</string>
     <string name="emotional_well_being_healing_practices_for_children"><![CDATA[Emotional Well-being & Healing Practices for Children]]></string>
     <string name="_32_video_series">32 video series</string>
+    <string name="try_again">Try again</string>
+    <string name="no_connection_try_again">No connection, try again</string>
+    <string name="back">Back</string>
 </resources>

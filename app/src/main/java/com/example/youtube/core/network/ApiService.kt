@@ -1,14 +1,13 @@
 package com.example.youtube.core.network
 
-import com.example.youtube.core.utils.Resource
 import com.example.youtube.data.model.PlaylistsModel
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
     @GET("playlists")
-    fun getPlaylists(
+    suspend fun getPlaylists(
         @Query("part")
         part: String,
         @Query("channelId")
@@ -17,5 +16,13 @@ interface ApiService {
         apiKey: String,
         @Query("maxResults")
         maxResults: Int
-    ): Call<PlaylistsModel>
+    ): Response<PlaylistsModel>
+
+    @GET("playlistItems")
+    suspend fun getPlaylistItems(
+        @Query("part") part: String,
+        @Query("key") apiKey: String,
+        @Query("playlistId") playlistId: String,
+        @Query("maxResults") maxResults: Int
+    ): Response<PlaylistsModel>
 }
