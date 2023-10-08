@@ -5,27 +5,32 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.example.youtube.R
 import com.example.youtube.core.base.BaseFragment
 import com.example.youtube.data.model.PlaylistsModel
 import com.example.youtube.databinding.FragmentPlaylistItemsBinding
-import com.example.youtube.presentation.activity.MainActivity
 import com.example.youtube.utils.Constants
+import com.example.youtube.utils.Constants.KEY_ITEMS_TO_VIDEOS_FRAGMENT
+import com.example.youtube.utils.Constants.KEY_SET_VIDEO_TO_VIDEOS_FRAGMENT
 import com.example.youtube.utils.InternetConnectionService
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlaylistItemsFragment : BaseFragment<FragmentPlaylistItemsBinding,PlaylistItemsViewModel>() {
+class PlaylistItemsFragment : BaseFragment<FragmentPlaylistItemsBinding, PlaylistItemsViewModel>() {
+    override val viewModel: PlaylistItemsViewModel by viewModel()
 
-    override fun inflateViewBinding(): FragmentPlaylistItemsBinding = FragmentPlaylistItemsBinding.inflate(layoutInflater)
-    override fun setViewModel(): PlaylistItemsViewModel = PlaylistItemsViewModel(MainActivity.repository)
+    override fun inflateViewBinding(): FragmentPlaylistItemsBinding =
+        FragmentPlaylistItemsBinding.inflate(layoutInflater)
 
-    private val adapter = PlaylistItemsAdapter()
+    private val adapter = PlaylistItemsAdapter(this::onItemClick)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initResultListener()
-        checkConnection()
         initLiveData()
     }
 
@@ -65,6 +70,12 @@ class PlaylistItemsFragment : BaseFragment<FragmentPlaylistItemsBinding,Playlist
                 if (isConnect) {
                     binding.llContainerPlaylistItems.visibility = View.VISIBLE
                     binding.flInclude.visibility = View.GONE
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.no_connection_try_again),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -86,6 +97,21 @@ class PlaylistItemsFragment : BaseFragment<FragmentPlaylistItemsBinding,Playlist
         binding.tvTitle.text = item.snippet.title
         binding.tvDescription.text = item.snippet.description
         binding.tvVideosCount.text = item.contentDetails.itemCount.toString() + " video series"
+        binding.layoutToolbarItems.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun onItemClick(playlistItem: PlaylistsModel.Item) {
+        setFragmentResult(
+            KEY_ITEMS_TO_VIDEOS_FRAGMENT,
+            bundleOf(KEY_SET_VIDEO_TO_VIDEOS_FRAGMENT to playlistItem)
+        )
+        findNavController().navigate(R.id.videoDetailFragment)
+    }
+
+    override fun initListener() {
+        super.initListener()
         binding.layoutToolbarItems.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }

@@ -8,7 +8,7 @@ import coil.load
 import com.example.youtube.data.model.PlaylistsModel
 import com.example.youtube.databinding.ItemPlaylistBinding
 
-class PlaylistsAdapter(private val onClickItem:(playlistsModelItem: PlaylistsModel.Item) -> Unit) :
+class PlaylistsAdapter(private val onClickItem: (playlistsModelItem: PlaylistsModel.Item) -> Unit) :
     RecyclerView.Adapter<PlaylistsAdapter.PlaylistsViewHolder>() {
 
     private var list = mutableListOf<PlaylistsModel.Item>()

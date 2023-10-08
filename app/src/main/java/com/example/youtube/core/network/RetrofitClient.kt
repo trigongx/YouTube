@@ -7,26 +7,26 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitClient {
-    fun createApiService(): ApiService {
+fun provideInterceptor(): HttpLoggingInterceptor {
+    return HttpLoggingInterceptor()
+        .setLevel(HttpLoggingInterceptor.Level.BODY)
+}
 
-        val interceptor = HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
-
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .build()
-
-        val retrofitClient = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-
-        return retrofitClient.create(ApiService::class.java)
-    }
-
+fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+    return OkHttpClient.Builder()
+        .addInterceptor(interceptor)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .build()
+}
+fun provideRetrofit(okHttpClient: OkHttpClient):Retrofit{
+    return Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
+        .build()
+}
+fun provideApiService(retrofit: Retrofit):ApiService{
+    return retrofit.create(ApiService::class.java)
 }

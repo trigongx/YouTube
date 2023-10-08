@@ -7,8 +7,10 @@ class Repository(private val remoteDataSource: RemoteDataSource) {
     suspend fun getPlaylists(): Result<PlaylistsModel> {
         return remoteDataSource.getPlaylists()
     }
-
     suspend fun getPlaylistItems(playlistId: String):Result<PlaylistsModel>{
         return remoteDataSource.getPlaylistItems(playlistId)
+    }
+    suspend fun getVideosDetails(videoId:String):Result<PlaylistsModel>{
+        return remoteDataSource.getVideosDetails(videoId)
     }
 }

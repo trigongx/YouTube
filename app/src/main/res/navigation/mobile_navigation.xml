@@ -10,12 +10,12 @@
         android:label="fragment_playlists"
         tools:layout="@layout/fragment_playlists" />
     <fragment
-        android:id="@+id/noInternetFragment"
-        android:name="com.example.youtube.presentation.nointernet.NoInternetFragment"
-        android:label="fragment_no_internent"
-        tools:layout="@layout/fragment_no_internent" />
-    <fragment
         android:id="@+id/playlistItemsFragment"
         android:name="com.example.youtube.presentation.playlistitems.PlaylistItemsFragment"
         android:label="PlaylistItemsFragment" />
+    <fragment
+        android:id="@+id/videoDetailFragment"
+        android:name="com.example.youtube.presentation.videodetail.VideoDetailFragment"
+        android:label="fragment_video_detail"
+        tools:layout="@layout/fragment_video_detail" />
 </navigation>

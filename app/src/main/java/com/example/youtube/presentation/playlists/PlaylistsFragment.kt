@@ -1,7 +1,6 @@
 package com.example.youtube.presentation.playlists
 
 
-import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -11,30 +10,35 @@ import com.example.youtube.R
 import com.example.youtube.core.base.BaseFragment
 import com.example.youtube.data.model.PlaylistsModel
 import com.example.youtube.databinding.FragmentPlaylistsBinding
-import com.example.youtube.presentation.activity.MainActivity
 import com.example.youtube.utils.Constants
 import com.example.youtube.utils.InternetConnectionService
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : BaseFragment<FragmentPlaylistsBinding, PlaylistsViewModel>() {
+    override val viewModel: PlaylistsViewModel by viewModel()
 
     override fun inflateViewBinding(): FragmentPlaylistsBinding =
         FragmentPlaylistsBinding.inflate(layoutInflater)
-    override fun setViewModel(): PlaylistsViewModel = PlaylistsViewModel(MainActivity.repository)
 
     private val adapter = PlaylistsAdapter(this::onClickItem)
 
     /*private val internetConnectionService = InternetConnectionService(requireContext())*/
-    // нельзя задавать requireContext переменной
+    // нельзя задавать requireContext переменной пустой переменной
 
     override fun checkConnection() {
         super.checkConnection()
-        val handler = Handler()
-        val delayMillis = 3000
-        InternetConnectionService(requireContext()).observe(viewLifecycleOwner) { hasInternet ->
-            if (!hasInternet) {
-                handler.postDelayed({
-                    findNavController().navigate(R.id.noInternetFragment)
-                }, delayMillis.toLong())
+        InternetConnectionService(requireContext()).observe(viewLifecycleOwner) { isConnect ->
+            if (!isConnect) {
+                binding.rvPlaylists.visibility = View.GONE
+                binding.containerInclude.visibility = View.VISIBLE
+            }
+            binding.layoutNoConnection.btnCheckInternetTryAgain.setOnClickListener {
+                if (isConnect) {
+                    binding.rvPlaylists.visibility = View.VISIBLE
+                    binding.containerInclude.visibility = View.GONE
+                } else{
+                    Toast.makeText(requireContext(), getString(R.string.no_connection_try_again), Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -47,7 +51,7 @@ class PlaylistsFragment : BaseFragment<FragmentPlaylistsBinding, PlaylistsViewMo
     override fun initView() {
         super.initView()
         viewModel.playlists.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "SUCCESS", Toast.LENGTH_SHORT).show()
+            /*Toast.makeText(requireContext(), "SUCCESS", Toast.LENGTH_SHORT).show()*/
             adapter.addData(it.items)
             binding.pbLoading.visibility = View.GONE
         }
@@ -59,24 +63,6 @@ class PlaylistsFragment : BaseFragment<FragmentPlaylistsBinding, PlaylistsViewMo
         viewModel.error.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
         }
-        /*viewModel.getPlaylists().observe(viewLifecycleOwner) { resource ->
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    resource.data?.let {
-                        adapter.addData(it.items)
-                    }
-                    binding.pbLoading.visibility = View.GONE
-                }
-
-                Status.ERROR -> {
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
-                }
-
-                Status.LOADING -> {
-                    binding.pbLoading.visibility = View.VISIBLE
-                }
-            }
-        }*/
     }
 
     override fun initData() {
@@ -84,9 +70,10 @@ class PlaylistsFragment : BaseFragment<FragmentPlaylistsBinding, PlaylistsViewMo
         viewModel.getPlaylists()
     }
 
-    private fun onClickItem(playlistItem:PlaylistsModel.Item){
+    private fun onClickItem(playlistItem: PlaylistsModel.Item) {
         setFragmentResult(
-            Constants.KEY_PLAYLIST_TO_VIDEOS, bundleOf(Constants.KEY_SET_VIDEO_TO_FRAGMENT_ITEMS to playlistItem)
+            Constants.KEY_PLAYLIST_TO_VIDEOS,
+            bundleOf(Constants.KEY_SET_VIDEO_TO_FRAGMENT_ITEMS to playlistItem)
         )
         findNavController().navigate(R.id.playlistItemsFragment)
     }

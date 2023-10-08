@@ -7,6 +7,7 @@
     <dimen name="_0dp">0dp</dimen>
     <dimen name="_8dp">8dp</dimen>
     <dimen name="_16sp">16sp</dimen>
+    <dimen name="_20sp">20sp</dimen>
     <dimen name="_12sp">12sp</dimen>
     <dimen name="img_no_internet_default_with">240dp</dimen>
     <dimen name="img_no_internet_default_height">276dp</dimen>

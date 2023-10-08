@@ -7,7 +7,7 @@ import com.example.youtube.data.model.PlaylistsModel
 import com.example.youtube.domain.repository.Repository
 
 class PlaylistItemsViewModel(private val repository: Repository):BaseViewModel() {
-    private var _playlistItems = MutableLiveData<PlaylistsModel>()
+    private val _playlistItems = MutableLiveData<PlaylistsModel>()
     val playlistItems: LiveData<PlaylistsModel> get() = _playlistItems
 
     fun getPlaylistItems(playlistId: String) = doOperation(
