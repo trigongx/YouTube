@@ -56,7 +56,7 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding,VideoDetailV
             bundle.getSerializable(KEY_SET_VIDEO_TO_VIDEOS_FRAGMENT)?.let { model ->
                 val _model = model as PlaylistsModel.Item
                 initView(_model.contentDetails.videoId)
-                Log.e("denn", "initResultListener: ${_model.contentDetails.videoId}", )
+                //Log.e("denn", "initResultListener: ${_model.contentDetails.videoId}", )
             }
         }
     }
@@ -69,7 +69,7 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding,VideoDetailV
             binding.youtubePlayerView.getYouTubePlayerWhenReady(object : YouTubePlayerCallback{
                 override fun onYouTubePlayer(youTubePlayer: YouTubePlayer) {
                     val videoId = item.items.first().id
-                    Log.e("denn", "onYouTubePlayer: ${ item.items.first().id}", )
+                    //Log.e("denn", "onYouTubePlayer: ${ item.items.first().id}", )
                     youTubePlayer.loadVideo(videoId,0f)
                 }
 
