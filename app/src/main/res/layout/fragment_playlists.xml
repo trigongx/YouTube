@@ -33,7 +33,7 @@
 
         <include
             android:id="@+id/layout_no_connection"
-            layout="@layout/fragment_no_internent"/>
+            layout="@layout/layout_no_internet"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
