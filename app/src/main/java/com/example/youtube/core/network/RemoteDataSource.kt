@@ -7,24 +7,26 @@ import com.example.youtube.utils.Constants
 
 class RemoteDataSource(private val apiService: ApiService) : BaseDataSource() {
 
-    suspend fun getPlaylists(): Result<PlaylistsModel> {
+    suspend fun getPlaylists(nextPageToken:String): Result<PlaylistsModel> {
         return getResult {
             apiService.getPlaylists(
                 part = Constants.PART,
                 channelId = Constants.CHANNEL_ID,
                 apiKey = BuildConfig.API_KEY,
                 maxResults = 16,
+                nextPageToken = nextPageToken
             )
         }
     }
 
-    suspend fun getPlaylistItems(playlistId: String): Result<PlaylistsModel> {
+    suspend fun getPlaylistItems(nextPageToken: String,playlistId: String): Result<PlaylistsModel> {
         return getResult {
             apiService.getPlaylistItems(
                 part = Constants.PART,
                 apiKey = BuildConfig.API_KEY,
                 playlistId = playlistId,
                 maxResults = 16,
+                nextPageToken = nextPageToken
             )
         }
     }
