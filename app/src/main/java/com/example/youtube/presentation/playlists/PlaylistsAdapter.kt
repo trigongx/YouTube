@@ -3,24 +3,20 @@ package com.example.youtube.presentation.playlists
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.youtube.data.model.PlaylistsModel
 import com.example.youtube.databinding.ItemPlaylistBinding
 
-class PlaylistsAdapter(private val onClickItem: (playlistsModelItem: PlaylistsModel.Item) -> Unit) :
-    RecyclerView.Adapter<PlaylistsAdapter.PlaylistsViewHolder>() {
+class PlaylistsAdapter(
+    diffUtilCallback: DiffUtil.ItemCallback<PlaylistsModel.Item>,
+    private val onClickItem: (playlistsModelItem: PlaylistsModel.Item) -> Unit
+) : PagingDataAdapter<PlaylistsModel.Item,PlaylistsAdapter.PlaylistsViewHolder>(diffUtilCallback) {
 
-    private var list = mutableListOf<PlaylistsModel.Item>()
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun addData(playlistModelItem: List<PlaylistsModel.Item>) {
-        list.clear()
-        list = playlistModelItem as MutableList<PlaylistsModel.Item>
-        notifyDataSetChanged()
-    }
-
+/*    private var list = mutableListOf<PlaylistsModel.Item>()*/
+    //тут адаптер получает 2 источника чтобы обновить данные,из-за этого был тот баг,с непрогрузкой плейлиста
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
         return PlaylistsViewHolder(
             ItemPlaylistBinding.inflate(
@@ -30,11 +26,15 @@ class PlaylistsAdapter(private val onClickItem: (playlistsModelItem: PlaylistsMo
             )
         )
     }
-
-    override fun getItemCount(): Int = list.size
+/*
+    override fun getItemCount(): Int = list.size*/
+    //ему для корректной работы нужен только 1 источник
 
     override fun onBindViewHolder(holder: PlaylistsViewHolder, position: Int) {
-        holder.toBind(list[position])
+        val newPosition = getItem(position)
+        newPosition?.let{
+            holder.toBind(it)
+        }
     }
 
     inner class PlaylistsViewHolder(private val binding: ItemPlaylistBinding) :

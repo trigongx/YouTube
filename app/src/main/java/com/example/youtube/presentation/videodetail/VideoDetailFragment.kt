@@ -1,21 +1,15 @@
 package com.example.youtube.presentation.videodetail
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.youtube.R
 import com.example.youtube.core.base.BaseFragment
 import com.example.youtube.data.model.PlaylistsModel
 import com.example.youtube.databinding.FragmentVideoDetailBinding
-import com.example.youtube.utils.Constants.KEY_ITEMS_TO_VIDEOS_FRAGMENT
-import com.example.youtube.utils.Constants.KEY_SET_VIDEO_TO_VIDEOS_FRAGMENT
 import com.example.youtube.utils.InternetConnectionService
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,11 +19,9 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding,VideoDetailV
     override fun inflateViewBinding(): FragmentVideoDetailBinding = FragmentVideoDetailBinding.inflate(layoutInflater)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initResultListener()
         initLiveData()
         lifecycle.addObserver(binding.youtubePlayerView)
     }
-
     override fun checkConnection() {
         super.checkConnection()
         InternetConnectionService(requireContext()).observe(viewLifecycleOwner) { isConnect ->
@@ -47,19 +39,24 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding,VideoDetailV
             }
         }
     }
-    private fun initView(videoId:String){
-        viewModel.getVideosDetails(videoId)
+
+    override fun initData() {
+        super.initData()
+        arguments?.let {
+            val video:PlaylistsModel.Item = VideoDetailFragmentArgs.fromBundle(it).videoDetail
+            viewModel.getVideosDetails(video.contentDetails.videoId!!)
+        }
     }
 
-    private fun initResultListener(){
+    /*private fun initResultListener(){
         setFragmentResultListener(KEY_ITEMS_TO_VIDEOS_FRAGMENT){ _, bundle ->
             bundle.getSerializable(KEY_SET_VIDEO_TO_VIDEOS_FRAGMENT)?.let { model ->
                 val _model = model as PlaylistsModel.Item
-                initView(_model.contentDetails.videoId)
+                _model.contentDetails.videoId?.let { initView(it) }//
                 //Log.e("denn", "initResultListener: ${_model.contentDetails.videoId}", )
             }
         }
-    }
+    }*/
 
     private fun initLiveData() {
         viewModel.videosDetails.observe(viewLifecycleOwner){item ->
@@ -91,13 +88,11 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding,VideoDetailV
             findNavController().navigateUp()
         }
         binding.btnDownloadVideo.setOnClickListener {
-            downloadVideo()
+            binding.containerDownload.visibility = View.VISIBLE
         }
-    }
-
-    private fun downloadVideo() {
-        val alertDialog = AlertDialog.Builder(requireContext())
-        alertDialog.setView(R.layout.layout_btn_download).show()
+        binding.layoutDownload.btnDownload.setOnClickListener {
+            binding.containerDownload.visibility = View.GONE
+        }
     }
 
 }

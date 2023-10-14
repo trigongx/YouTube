@@ -3,20 +3,25 @@ package com.example.youtube.presentation.playlistitems
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.youtube.data.model.PlaylistsModel
 import com.example.youtube.databinding.ItemPlaylistBinding
 
-class PlaylistItemsAdapter(private val onItemClick:(playlistItem: PlaylistsModel.Item) -> Unit) : RecyclerView.Adapter<PlaylistItemsAdapter.PlaylistItemsViewHolder>() {
+class PlaylistItemsAdapter(
+    diffUtilCallback: DiffUtil.ItemCallback<PlaylistsModel.Item>,
+    private val onItemClick:(playlistItem: PlaylistsModel.Item) -> Unit
+) : PagingDataAdapter<PlaylistsModel.Item,PlaylistItemsAdapter.PlaylistItemsViewHolder>(diffUtilCallback) {
 
-    private var _list = mutableListOf<PlaylistsModel.Item>()
+    /*private var _list = mutableListOf<PlaylistsModel.Item>()
     private val list: List<PlaylistsModel.Item> get() = _list
     fun addData(playlistModelItem: List<PlaylistsModel.Item>) {
         _list.clear()
         _list.addAll(playlistModelItem)
         notifyItemRangeInserted(_list.size, playlistModelItem.size - _list.size)
-    }
+    }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PlaylistItemsViewHolder(
         ItemPlaylistBinding.inflate(
@@ -26,16 +31,19 @@ class PlaylistItemsAdapter(private val onItemClick:(playlistItem: PlaylistsModel
         )
     )
 
-    override fun getItemCount() = list.size
+    /*override fun getItemCount() = list.size*/
 
     override fun onBindViewHolder(holder: PlaylistItemsViewHolder, position: Int) {
-        holder.bind(list[position])
+        val newPosition = getItem(position)
+        newPosition?.let{
+            holder.toBind(it)
+        }
     }
 
     inner class PlaylistItemsViewHolder(private val binding: ItemPlaylistBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: PlaylistsModel.Item) {
+        fun toBind(item: PlaylistsModel.Item) {
             if (!item.snippet.thumbnails.default.url.isEmpty() && !item.snippet.title.isEmpty()) {
                 binding.imgTransparent.visibility = View.INVISIBLE
                 binding.tvInImgPlaylist.visibility = View.INVISIBLE
